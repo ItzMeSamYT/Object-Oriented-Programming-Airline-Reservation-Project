@@ -100,8 +100,8 @@ class Manager extends User {
                 System.out.println("Status successfully updated to "+flight.status+" successfully!");
                 break;
             default:
-                System.out.println("Invalid Choice.");
-                break;
+                sc.close();
+                throw new InvalidChoiceException("Invalid choice. Are you sure you spelled it correctly?");
         }
         sc.close();
     }
@@ -140,5 +140,21 @@ class Flight {
     double seatPrice;
     boolean cateringAvailable;
     String status;
-
 }
+
+/*class aircraftDemo {
+    public static void main(String[] args) {
+        Manager m = new Manager("admin","password");
+        m.displayInfo();
+        Flight f = new Flight("abc123","manipal","hyderabad",2,1,FlightType.DOMESTIC,1.1f,true,"On Time");
+        FlightSchedule sch = new FlightSchedule();
+        m.addFlight(sch, f);
+        m.addFlight(sch, f);
+        m.addFlight(sch, f);
+        try {
+            m.updateFlight(sch, f);
+        } catch (InvalidChoiceException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}*/
