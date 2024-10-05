@@ -57,15 +57,51 @@ class Manager extends User {
         System.out.println("What do you want to update?\nOptions: Flight ID, Origin, Destination, Total Seats, Seat Price, Catering Availability, Status");
         choice = sc.nextLine();
         switch (choice.toUpperCase()) {
-            case "Flight ID": 
+            case "FLIGHT ID": 
                 System.out.println("Current Flight ID: "+flight.flightId);
                 System.out.print("New Flight ID: ");
                 flight.flightId = sc.nextLine();
+                System.out.println("Flight ID updated to "+flight.flightId+" successfully!");
                 break;
-            case "Origin":
+            case "ORIGIN":
                 System.out.println("Current Origin: "+flight.origin);
                 System.out.print("New Origin: ");
                 flight.origin = sc.nextLine();
+                System.out.println("Origin updated to "+flight.origin+" successfully!");
+                break;
+            case "DESTINATION":
+                System.out.println("Current destination: "+flight.destination);
+                System.out.print("New destination: ");
+                flight.destination=sc.nextLine();
+                System.out.println("Destination updated to "+flight.destination+" successfully!");
+                break;
+            case "TOTAL SEATS":
+                System.out.println("Current total seats: "+flight.totalSeats);
+                System.out.print("New total seats: ");
+                flight.totalSeats = sc.nextInt();
+                System.out.println("Total seats updated to "+flight.totalSeats+" successfully!");
+                break;
+            case "SEAT PRICE":
+                System.out.println("Current seat price: "+flight.seatPrice);
+                System.out.print("New seat price: ");
+                flight.seatPrice = sc.nextDouble();
+                System.out.println("Seat price updated to "+flight.seatPrice+" successfully.");
+                break;
+            case "CATERING AVAILABILITY":
+                System.out.println("Current catering availability: "+flight.cateringAvailable);
+                System.out.print("New catering availability: ");
+                flight.cateringAvailable = sc.nextBoolean();
+                System.out.println("Catering availability updated to "+flight.cateringAvailable+" successfully!");
+                break;
+            case "STATUS":
+                System.out.println("Current status: "+flight.status);
+                System.out.print("New status: ");
+                flight.status = sc.nextLine();
+                System.out.println("Status successfully updated to "+flight.status+" successfully!");
+                break;
+            default:
+                System.out.println("Invalid Choice.");
+                break;
         }
         sc.close();
     }
