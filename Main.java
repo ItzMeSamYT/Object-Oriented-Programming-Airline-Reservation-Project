@@ -36,6 +36,7 @@ class Traveler extends User {
     }
 }
 
+@SuppressWarnings("resource")
 class Manager extends User {
     public Manager(String loginID, String password) {
         super(loginID, password);
@@ -47,6 +48,7 @@ class Manager extends User {
         System.out.println("You have administrator permissions.");
     }
 
+    // Add flight method
     public void addFlight(FlightSchedule flightSchedule) {
         Scanner sc = new Scanner(System.in);
         Flight flight = new Flight();
@@ -54,9 +56,10 @@ class Manager extends User {
         System.out.print("Flight ID: ");
         flight.flightId = sc.nextLine();
 
-        System.out.print("Enter Flight Type (Domestic/International): ");
-        String flightType = scanner.nextLine();
-        
+        System.out.print("Flight type (DOMESTIC/INTERNATIONAL): ");
+        String strFlightType = sc.nextLine();
+        flight.type = FlightType.valueOf(strFlightType);
+
         System.out.print("Origin: ");
         flight.origin = sc.nextLine();
 
@@ -65,42 +68,50 @@ class Manager extends User {
 
         System.out.print("Total Seats: ");
         flight.totalSeats = sc.nextInt();
+        sc.nextLine(); // Consume newline
 
-        System.out.print("\n");
         System.out.print("Catering Availability (true/false): ");
         flight.cateringAvailable = sc.nextBoolean();
+        sc.nextLine(); // Consume newline
+
         System.out.print("Duty-Free Availability (true/false): ");
         flight.dutyFreeAvailable = sc.nextBoolean();
-        sc.nextLine();
+        sc.nextLine(); // Consume newline
 
         System.out.print("Status: ");
         flight.status = sc.nextLine();
 
-        System.out.print("\n");
         System.out.print("Number of Economy Seats: ");
         flight.economySeats = sc.nextInt();
+        sc.nextLine(); // Consumer newline
+
         System.out.print("Seat Price for Economy: ");
         flight.economySeatPrice = sc.nextDouble();
+        sc.nextLine(); // Consume newline
 
-        System.out.print("\n");
         System.out.print("Number of Business Seats: ");
         flight.businessSeats = sc.nextInt();
+        sc.nextLine(); // Consume newline
+
         System.out.print("Seat Price for Business: ");
         flight.businessSeatPrice = sc.nextDouble();
+        sc.nextLine(); //Consume newline
 
-        System.out.print("\n");
         System.out.print("Number of First Seats: ");
         flight.firstSeats = sc.nextInt();
+        sc.nextLine(); // Consume newline
+
         System.out.print("Seat Price for First: ");
         flight.firstSeatPrice = sc.nextDouble();
+        sc.nextLine(); // Consume newline
 
         // Setting Residence seat to 1 by default
         flight.residenceSeats = 1;
 
         // Get price for Residence class ticket
-        System.out.print("\n");
         System.out.print("Seat Price for Residence: ");
         flight.residenceSeatPrice = sc.nextDouble();
+        sc.nextLine(); // Consume newline
 
         // Add the flight to the schedule
         try {
@@ -108,41 +119,59 @@ class Manager extends User {
         } catch (ExceededMaxSizeException e) {
             System.out.println(e.getMessage());
         }
+        
     }
 
+    // Update flight method
     public void updateFlight(FlightSchedule sch, Flight flight) throws InvalidChoiceException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n 1. Origin \n 2. Destination\n 3. Total Seats \n 4. Ticket Price \n 5. Catering Availability \n 6. Status");
+        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Status");
         System.out.print("What do you want to update: ");
+        sc.nextLine();
         int choice = sc.nextInt();
+        sc.nextLine(); // Consume newline
 
         switch (choice) {
             case 1:
+                System.out.println("Current Flight ID: " + flight.flightId);
+                System.out.print("New Flight ID: ");
+                flight.flightId = sc.nextLine();
+                System.out.println("Flight ID updated successfully!");
+                break;
+            case 2:
+                System.out.println("Current flight type: "+flight.type);
+                System.out.print("New flight type: ");
+                String strFlightType = sc.nextLine();
+                flight.type = FlightType.valueOf(strFlightType);
+                System.out.println("Flight type updated successfully!");
+                break;
+            case 3:
                 System.out.println("Current Origin: " + flight.origin);
                 System.out.print("New Origin: ");
                 flight.origin = sc.nextLine();
                 System.out.println("Origin updated successfully!");
                 break;
-            case 2:
+            case 4:
                 System.out.println("Current Destination: " + flight.destination);
                 System.out.print("New Destination: ");
                 flight.destination = sc.nextLine();
                 System.out.println("Destination updated successfully!");
                 break;
-            case 3:
+            case 5:
                 System.out.println("Current Total Seats: " + flight.totalSeats);
                 System.out.print("New Total Seats: ");
                 flight.totalSeats = sc.nextInt();
                 sc.nextLine(); // Consume newline
                 System.out.println("Total seats updated successfully!");
                 break;
-            case 4:
+            case 6:
                 System.out.println("Current Economy Seat Price: " + flight.economySeatPrice);
                 System.out.print("New Economy Seat Price: ");
                 flight.economySeatPrice = sc.nextDouble();
+                sc.nextLine(); //Consume newLine
                 System.out.println("Economy seat price updated successfully!");
                 break;
-            case 5:
+            case 7:
                 System.out.println("Current Catering Availability: " + flight.cateringAvailable);
                 System.out.print("New Catering Availability: ");
                 flight.cateringAvailable = sc.nextBoolean();
@@ -154,15 +183,35 @@ class Manager extends User {
                     flight.addCateringMenu("First");
                 }
                 break;
-            case 6:
+            case 8:
                 System.out.println("Current Status: " + flight.status);
                 System.out.print("New Status: ");
                 flight.status = sc.nextLine();
                 System.out.println("Status updated successfully!");
                 break;
             default:
+                
                 throw new InvalidChoiceException("Invalid choice!");
         }
+        
+    }
+
+    // Method to delete flight
+    public void deleteFlight(FlightSchedule flightSchedule) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Flight ID to cancel: ");
+        String flightId = sc.nextLine();
+        
+        for (Flight flight : flightSchedule.flightList) {
+            if (flight != null && flight.flightId.equals(flightId)) {
+                flight.status = "Canceled"; // Set status to Canceled
+                System.out.println("Flight " + flightId + " has been canceled.");
+                
+                return;
+            }
+        }
+        System.out.println("Flight not found.");
+        
     }
 }
 
@@ -172,10 +221,12 @@ enum FlightType {
 }
 
 // Flight class
+@SuppressWarnings("resource")
 class Flight {
     String flightId;
     String origin;
     String destination;
+    FlightType type;
     int totalSeats;
     boolean cateringAvailable;
     boolean dutyFreeAvailable;
@@ -188,8 +239,7 @@ class Flight {
     double firstSeatPrice;
     int residenceSeats;
     double residenceSeatPrice; // Add residence seat price
-    String flightType;
-    
+
     CateringMenuItem[] cateringMenu = new CateringMenuItem[10]; // Assuming a max of 10 menu items
 
     public void addCateringMenu(String classType) {
@@ -205,19 +255,68 @@ class Flight {
             if (cateringMenu[i] == null) {
                 cateringMenu[i] = new CateringMenuItem(name, type, allergens, classType);
                 System.out.println(name + " added to the catering menu for " + classType + ".");
+                
                 break;
+            }
+        }
+        
+    }
+
+    private void printCateringMenu(String classType) {
+        System.out.printf("%-15s %-15s %-15s %-15s\n", "Dish Name", "Type", "Allergens", "Class");
+        System.out.println("--------------------------------------------------");
+        for (CateringMenuItem item : cateringMenu) {
+            if (item.classType.equals(classType)) {
+                System.out.println(item+"\n");
             }
         }
     }
 
-    public void printCateringMenu() {
-        System.out.printf("%-15s %-15s %-15s %-15s\n", "Dish Name", "Type", "Allergens", "Class");
-        System.out.println("--------------------------------------------------");
-        for (CateringMenuItem item : cateringMenu) {
-            if (item != null) {
-                System.out.printf("%-15s %-15s %-15s %-15s\n", item.name, item.type, item.allergens, item.classType);
+    public void displayCateringMenu(FlightSchedule flightSchedule) throws InvalidChoiceException {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Flight ID to view catering menu: ");
+        String flightId = sc.nextLine();
+
+        Flight flightToViewMenu = null;
+        for (Flight flight : flightSchedule.flightList) {
+            if (flight != null && flight.flightId.equals(flightId)) {
+                flightToViewMenu = flight;
+                break;
             }
         }
+
+        if (flightToViewMenu != null) {
+            System.out.println("Select Class Type:");
+            System.out.println("1. Economy");
+            System.out.println("2. Business");
+            System.out.println("3. First");
+            System.out.print("Choose an option: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
+
+            String classType = "";
+            switch (choice) {
+                case 1:
+                    classType = "Economy";
+                    break;
+                case 2:
+                    classType = "Business";
+                    break;
+                case 3:
+                    classType = "First";
+                    break;
+                default:
+                    
+                    throw new InvalidChoiceException("Invalid class choice. No menu will be displayed.");
+            }
+
+            // Print the catering menu for the selected class
+            System.out.println("\nCatering Menu for " + classType + ":");
+            flightToViewMenu.printCateringMenu(classType);
+        } else {
+            System.out.println("Flight not found.");
+        }
+        
     }
 }
 
@@ -233,9 +332,13 @@ class CateringMenuItem {
         this.allergens = allergens;
         this.classType = classType;
     }
+
+    @Override
+    public String toString() {
+        return "Dish name: "+name+"\n Type: "+type+"\nAlergens: "+allergens;
+    }
 }
 
-// FlightSchedule class
 class FlightSchedule {
     public int maxSize = 100; // Moved maxSize inside the class
     Flight[] flightList;
@@ -269,9 +372,9 @@ class FlightSchedule {
             }
         }
     }
+
 }
 
-// Duty-Free Management Class
 class DutyFreeManagement {
     DutyFreeItem[] dutyFreeItems;
     private int itemCount;
@@ -476,109 +579,6 @@ class CateringMenuManagement {
         for (CateringMenuItem item : cateringMenu) {
             if (item != null) {
                 System.out.printf("%-15s %-15s %-15s %-15s\n", item.name, item.type, item.allergens, item.classType);
-            }
-        }
-    }
-}
-
-class CateringMenuItem {
-    String name;
-    String type;
-    String allergens;
-    String classType;
-
-    public CateringMenuItem(String name, String type, String allergens, String classType) {
-        this.name = name;
-        this.type = type;
-        this.allergens = allergens;
-        this.classType = classType;
-    }
-}
-
-// Main Class
-public class AirlineReservationSystem {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        FlightSchedule flightSchedule = new FlightSchedule();
-        DutyFreeManagement dutyFreeManagement = new DutyFreeManagement(100);
-        CateringMenuManagement cateringMenuManagement = new CateringMenuManagement(flightSchedule);
-
-        while (true) {
-            System.out.println("1. Manager Login");
-            System.out.println("2. Traveler Login");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
-
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter Manager Username: ");
-                    String managerUsername = scanner.nextLine();
-                    System.out.print("Enter Manager Password: ");
-                    String managerPassword = scanner.nextLine();
-
-                    // Simple check for manager credentials (can be expanded to check from a list or database)
-                    if (managerUsername.equals("admin") && managerPassword.equals("admin123")) {
-                        Manager manager = new Manager(managerUsername, managerPassword);
-                        manager.displayInfo();
-                        System.out.print("\n");
-
-                        boolean managerMenu = true;
-                        while (managerMenu) {
-                            System.out.println("\n1. Manage Flights");
-                            System.out.println("2. Manage Duty-Free");
-                            System.out.println("3. Manage Catering");
-                            System.out.println("4. Logout");
-                            System.out.print("Choose an option: ");
-                            int managerChoice = scanner.nextInt();
-                            System.out.print("\n");
-
-                            switch (managerChoice) {
-                                case 1:
-                                    manager.addFlight(flightSchedule);
-                                    flightSchedule.viewFlights();
-                                    break;
-                                case 2:
-                                    dutyFreeManagement.manageDutyFree();
-                                    break;
-                                case 3:
-                                    cateringMenuManagement.manageCatering();
-                                    break;
-                                case 4:
-                                    managerMenu = false;
-                                    break;
-                                default:
-                                    System.out.println("Invalid choice. Please try again.");
-                            }
-                        }
-                    } else {
-                        System.out.println("Invalid Manager Username or Password. Try again.");
-                    }
-                    break;
-
-                case 2:
-                    System.out.print("Enter Traveler Username: ");
-                    String travelerUsername = scanner.nextLine();
-                    System.out.print("Enter Traveler Password: ");
-                    String travelerPassword = scanner.nextLine();
-
-                    // Simple check for traveler credentials
-                    if (travelerUsername.equals("traveler") && travelerPassword.equals("traveler123")) {
-                        Traveler traveler = new Traveler(travelerUsername, travelerPassword);
-                        traveler.displayInfo();
-                        // Add traveler functionalities if needed
-                    } else {
-                        System.out.println("Invalid Traveler Username or Password. Try again.");
-                    }
-                    break;
-
-                case 3:
-                    System.out.println("Exiting...");
-                    return;
-
-                default:
-                    System.out.println("Invalid choice. Please try again.");
             }
         }
     }
