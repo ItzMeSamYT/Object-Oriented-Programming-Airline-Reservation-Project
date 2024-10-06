@@ -49,7 +49,10 @@ class Manager extends User {
     }
 
     // Add flight method
-    public void addFlight(FlightSchedule flightSchedule) {
+    public void addFlight(FlightSchedule flightSchedule) throws ExceededMaxSizeException {
+        if (flightSchedule.flightList.length==99) {
+            throw new ExceededMaxSizeException("Too many flights for system. Please create new schedule object to continue adding flights.");
+        }
         Scanner sc = new Scanner(System.in);
         Flight flight = new Flight();
 
@@ -123,8 +126,21 @@ class Manager extends User {
     }
 
     // Update flight method
-    public void updateFlight(FlightSchedule sch, Flight flight) throws InvalidChoiceException {
+    public void updateFlight(FlightSchedule sch) throws InvalidChoiceException {
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Flight ID of flight to update: ");
+        String identifier = sc.nextLine();
+        Flight flight = null;
+        for (Flight f : sch.flightList) {
+            if (f.flightId.equals(identifier)) {
+                flight = f;
+            }
+        }
+
+        if (flight == null) {
+            throw new InvalidChoiceException("Flight not found.");
+        }
+
         System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Status");
         System.out.print("What do you want to update: ");
         sc.nextLine();
@@ -579,6 +595,122 @@ class CateringMenuManagement {
         for (CateringMenuItem item : cateringMenu) {
             if (item != null) {
                 System.out.printf("%-15s %-15s %-15s %-15s\n", item.name, item.type, item.allergens, item.classType);
+            }
+        }
+    }
+}
+
+@SuppressWarnings("resource")
+class AirlineReservationSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        FlightSchedule flightSchedule = new FlightSchedule();
+        DutyFreeManagement dutyFreeManagement = new DutyFreeManagement(100);
+        CateringMenuManagement cateringMenuManagement = new CateringMenuManagement(flightSchedule);
+
+        while (true) {
+            System.out.println("1. Manager Login");
+            System.out.println("2. Traveler Login");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Manager Username: ");
+                    String managerUsername = scanner.nextLine();
+                    System.out.print("Enter Manager Password: ");
+                    String managerPassword = scanner.nextLine();
+
+                    // Simple check for manager credentials (can be expanded to check from a list or database)
+                    if (managerUsername.equals("admin") && managerPassword.equals("admin123")) {
+                        Manager manager = new Manager(managerUsername, managerPassword);
+                        manager.displayInfo();
+                        System.out.println();
+
+                        boolean managerMenu = true;
+                        while (managerMenu) {
+                            System.out.println("\n1. Manage Flights");
+                            System.out.println("2. Manage Duty-Free");
+                            System.out.println("3. Manage Catering");
+                            System.out.println("4. Logout");
+                            System.out.print("Choose an option: ");
+                            int managerChoice = scanner.nextInt();
+                            System.out.println();
+
+                            switch (managerChoice) {
+                                case 1:
+                                    boolean flightManagement = true;
+                                    while (flightManagement)
+                                        System.out.println("\n1. Add Flight");
+                                        System.out.println("2. Update Flight");
+                                        System.out.println("3. View Flights");
+                                        System.out.println("4. Delete Flight");
+                                        System.out.println("5. Back to Manager Menu");
+                                        System.out.print("Choose an option: ");
+                                        int flightManagementChoice = scanner.nextInt();
+                                        System.out.println();
+
+                                        switch (flightManagementChoice) {
+                                            case 1:
+                                                try {
+                                                    manager.addFlight(flightSchedule);
+                                                } catch (ExceededMaxSizeException e) {
+                                                    System.out.println(e.getMessage());
+                                                }
+                                                break;
+                                            case 2:
+                                                try {
+                                                    manager.updateFlight(flightSchedule);
+                                                } catch (InvalidChoiceException e) {
+                                                    System.out.println(e.getMessage());
+                                                }
+                                                break;
+                                            case 3:
+                                                flightSchedule.viewFlights();
+                                                break;
+                                            case 4:
+                                                System.out.print("Enter Flight ID of flight to delete: ");
+                                        }
+                                    break;
+                                case 2:
+                                    dutyFreeManagement.manageDutyFree();
+                                    break;
+                                case 3:
+                                    cateringMenuManagement.manageCatering();
+                                    break;
+                                case 4:
+                                    managerMenu = false;
+                                    break;
+                                default:
+                                    System.out.println("Invalid choice. Please try again.");
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid Manager Username or Password. Try again.");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter Traveler Username: ");
+                    String travelerUsername = scanner.nextLine();
+                    System.out.print("Enter Traveler Password: ");
+                    String travelerPassword = scanner.nextLine();
+                    Traveler traveler = new Traveler(travelerUsername, travelerPassword);
+                    traveler.displayInfo();
+                    break;
+
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+
+                default:
+                    try {
+                        throw new InvalidChoiceException("Invalid Menu Option. Please choose again.");
+                    } catch (InvalidChoiceException e) {
+                        System.out.println(e.getMessage());
+                    }
             }
         }
     }
