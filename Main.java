@@ -55,7 +55,7 @@ class Manager extends User {
         System.out.print("Flight ID: ");
         flight.flightId = sc.nextLine();
 
-        System.out.println("Flight type: (DOMESTIC/INTERNATIONAL)");
+        System.out.print("Flight type (DOMESTIC/INTERNATIONAL): ");
         String strFlightType = sc.nextLine();
         flight.type = FlightType.valueOf(strFlightType);
 
@@ -124,7 +124,7 @@ class Manager extends User {
     // Update flight method
     public void updateFlight(FlightSchedule sch, Flight flight) throws InvalidChoiceException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n1. Flight ID \n2. Origin \n3. Destination \n4. Total Seats \n5. Ticket Price \n6. Catering Availability \n7. Status");
+        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Status");
         System.out.print("What do you want to update: ");
         sc.nextLine();
         int choice = sc.nextInt();
@@ -138,32 +138,39 @@ class Manager extends User {
                 System.out.println("Flight ID updated successfully!");
                 break;
             case 2:
+                System.out.println("Current flight type: "+flight.type);
+                System.out.print("New flight type: ");
+                String strFlightType = sc.nextLine();
+                flight.type = FlightType.valueOf(strFlightType);
+                System.out.println("Flight type updated successfully!");
+                break;
+            case 3:
                 System.out.println("Current Origin: " + flight.origin);
                 System.out.print("New Origin: ");
                 flight.origin = sc.nextLine();
                 System.out.println("Origin updated successfully!");
                 break;
-            case 3:
+            case 4:
                 System.out.println("Current Destination: " + flight.destination);
                 System.out.print("New Destination: ");
                 flight.destination = sc.nextLine();
                 System.out.println("Destination updated successfully!");
                 break;
-            case 4:
+            case 5:
                 System.out.println("Current Total Seats: " + flight.totalSeats);
                 System.out.print("New Total Seats: ");
                 flight.totalSeats = sc.nextInt();
                 sc.nextLine(); // Consume newline
                 System.out.println("Total seats updated successfully!");
                 break;
-            case 5:
+            case 6:
                 System.out.println("Current Economy Seat Price: " + flight.economySeatPrice);
                 System.out.print("New Economy Seat Price: ");
                 flight.economySeatPrice = sc.nextDouble();
                 sc.nextLine(); //Consume newLine
                 System.out.println("Economy seat price updated successfully!");
                 break;
-            case 6:
+            case 7:
                 System.out.println("Current Catering Availability: " + flight.cateringAvailable);
                 System.out.print("New Catering Availability: ");
                 flight.cateringAvailable = sc.nextBoolean();
@@ -175,7 +182,7 @@ class Manager extends User {
                     flight.addCateringMenu("First");
                 }
                 break;
-            case 7:
+            case 8:
                 System.out.println("Current Status: " + flight.status);
                 System.out.print("New Status: ");
                 flight.status = sc.nextLine();
