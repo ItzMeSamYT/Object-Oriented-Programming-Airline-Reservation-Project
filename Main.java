@@ -221,8 +221,7 @@ class Manager extends User {
         for (Flight flight : flightSchedule.flightList) {
             if (flight != null && flight.flightId.equals(flightId)) {
                 flight.status = "Canceled"; // Set status to Canceled
-                System.out.println("Flight " + flightId + " has been canceled.");
-                
+                System.out.println("Flight " + flightId + " has been canceled.");              
                 return;
             }
         }
@@ -671,7 +670,17 @@ class AirlineReservationSystem {
                                                 flightSchedule.viewFlights();
                                                 break;
                                             case 4:
-                                                System.out.print("Enter Flight ID of flight to delete: ");
+                                                manager.deleteFlight(flightSchedule);
+                                                break;
+                                            case 5:
+                                                flightManagement = false;
+                                                break;
+                                            default:
+                                                try {
+                                                    throw new InvalidChoiceException("Invalid choice. Please try again.");
+                                                } catch (InvalidChoiceException e) {
+                                                    System.out.println(e.getMessage());
+                                                }
                                         }
                                     break;
                                 case 2:
@@ -684,7 +693,11 @@ class AirlineReservationSystem {
                                     managerMenu = false;
                                     break;
                                 default:
-                                    System.out.println("Invalid choice. Please try again.");
+                                    try {
+                                        throw new InvalidChoiceException("Invalid choice. Please try again.");
+                                    } catch (InvalidChoiceException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                             }
                         }
                     } else {
