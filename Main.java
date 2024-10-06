@@ -50,7 +50,7 @@ class Manager extends User {
 
     // Add flight method
     public void addFlight(FlightSchedule flightSchedule) throws ExceededMaxSizeException {
-        if (flightSchedule.flightList.length==99) {
+        if (flightSchedule.flightList.length==flightSchedule.maxSize-1) {
             throw new ExceededMaxSizeException("Too many flights for system. Please create new schedule object to continue adding flights.");
         }
         Scanner sc = new Scanner(System.in);
@@ -117,11 +117,7 @@ class Manager extends User {
         sc.nextLine(); // Consume newline
 
         // Add the flight to the schedule
-        try {
-            flightSchedule.addFlight(flight);
-        } catch (ExceededMaxSizeException e) {
-            System.out.println(e.getMessage());
-        }
+        flightSchedule.addFlight(flight);
         
     }
 
@@ -131,9 +127,9 @@ class Manager extends User {
         System.out.print("Enter Flight ID of flight to update: ");
         String identifier = sc.nextLine();
         Flight flight = null;
-        for (Flight f : sch.flightList) {
-            if (f.flightId.equals(identifier)) {
-                flight = f;
+        for (Flight fl : sch.flightList) {
+            if (identifier.equals(fl.flightId)) {
+                flight = fl;
             }
         }
 
@@ -363,13 +359,9 @@ class FlightSchedule {
         flightList = new Flight[maxSize];
     }
 
-    public void addFlight(Flight f) throws ExceededMaxSizeException {
-        if (flightCount >= maxSize) {
-            throw new ExceededMaxSizeException("Too many flights. Use a different schedule object.");
-        } else {
-            flightList[flightCount++] = f;
-            System.out.println("Successfully added flight " + f.flightId + " to the schedule.");
-        }
+    public void addFlight(Flight f) {
+        flightList[flightCount++] = f;
+        System.out.println("Successfully added flight " + f.flightId + " to the schedule.");
     }
 
     public void viewFlights() {
@@ -641,7 +633,7 @@ class AirlineReservationSystem {
                             switch (managerChoice) {
                                 case 1:
                                     boolean flightManagement = true;
-                                    while (flightManagement)
+                                    while (flightManagement) {
                                         System.out.println("\n1. Add Flight");
                                         System.out.println("2. Update Flight");
                                         System.out.println("3. View Flights");
@@ -682,6 +674,7 @@ class AirlineReservationSystem {
                                                     System.out.println(e.getMessage());
                                                 }
                                         }
+                                    }
                                     break;
                                 case 2:
                                     dutyFreeManagement.manageDutyFree();
