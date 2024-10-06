@@ -359,10 +359,10 @@ class FlightSchedule {
         System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s\n", 
                         "Flight ID", "Origin", "Destination", "Total Seats", "Status", 
                         "Economy Price", "Business Price", "First Price", "Residence Price");
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
         for (Flight flight : flightList) {
             if (flight != null) {
-                System.out.printf("%-15s %-15s %-15s %-15d %-15s %.2f            %.2f            %.2f            %.2f\n", 
+                System.out.printf("%-15s %-15s %-15s %-15d %-15s %-15.2f %-15.2f %-15.2f %-15.2f\n", 
                                 flight.flightId, flight.origin, flight.destination, 
                                 flight.totalSeats, flight.status, 
                                 flight.economySeatPrice, flight.businessSeatPrice, 
