@@ -54,6 +54,9 @@ class Manager extends User {
         System.out.print("Flight ID: ");
         flight.flightId = sc.nextLine();
 
+        System.out.print("Enter Flight Type (Domestic/International): ");
+        String flightType = scanner.nextLine();
+        
         System.out.print("Origin: ");
         flight.origin = sc.nextLine();
 
@@ -185,7 +188,8 @@ class Flight {
     double firstSeatPrice;
     int residenceSeats;
     double residenceSeatPrice; // Add residence seat price
-
+    String flightType;
+    
     CateringMenuItem[] cateringMenu = new CateringMenuItem[10]; // Assuming a max of 10 menu items
 
     public void addCateringMenu(String classType) {
