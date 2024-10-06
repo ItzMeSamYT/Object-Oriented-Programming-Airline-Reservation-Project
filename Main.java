@@ -36,6 +36,7 @@ class Traveler extends User {
     }
 }
 
+@SuppressWarnings("resource")
 class Manager extends User {
     public Manager(String loginID, String password) {
         super(loginID, password);
@@ -118,7 +119,7 @@ class Manager extends User {
         } catch (ExceededMaxSizeException e) {
             System.out.println(e.getMessage());
         }
-        sc.close();
+        
     }
 
     // Update flight method
@@ -189,10 +190,10 @@ class Manager extends User {
                 System.out.println("Status updated successfully!");
                 break;
             default:
-                sc.close();
+                
                 throw new InvalidChoiceException("Invalid choice!");
         }
-        sc.close();
+        
     }
 
     // Method to delete flight
@@ -205,12 +206,12 @@ class Manager extends User {
             if (flight != null && flight.flightId.equals(flightId)) {
                 flight.status = "Canceled"; // Set status to Canceled
                 System.out.println("Flight " + flightId + " has been canceled.");
-                sc.close();
+                
                 return;
             }
         }
         System.out.println("Flight not found.");
-        sc.close();
+        
     }
 }
 
@@ -220,6 +221,7 @@ enum FlightType {
 }
 
 // Flight class
+@SuppressWarnings("resource")
 class Flight {
     String flightId;
     String origin;
@@ -253,11 +255,11 @@ class Flight {
             if (cateringMenu[i] == null) {
                 cateringMenu[i] = new CateringMenuItem(name, type, allergens, classType);
                 System.out.println(name + " added to the catering menu for " + classType + ".");
-                sc.close();
+                
                 break;
             }
         }
-        sc.close();
+        
     }
 
     private void printCateringMenu(String classType) {
@@ -302,7 +304,7 @@ class Flight {
                     classType = "First";
                     break;
                 default:
-                    sc.close();
+                    
                     throw new InvalidChoiceException("Invalid class choice. No menu will be displayed.");
             }
 
@@ -312,7 +314,7 @@ class Flight {
         } else {
             System.out.println("Flight not found.");
         }
-        sc.close();
+        
     }
 }
 
@@ -354,17 +356,17 @@ class FlightSchedule {
     }
 
     public void viewFlights() {
-    System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s\n", 
-                      "Flight ID", "Origin", "Destination", "Total Seats", "Status", 
-                      "Economy Price", "Business Price", "First Price", "Residence Price");
-    System.out.println("-----------------------------------------------------------------------------------------------------------------------");
-    for (Flight flight : flightList) {
-        if (flight != null) {
-            System.out.printf("%-15s %-15s %-15s %-15d %-15s %.2f            %.2f            %.2f            %.2f\n", 
-                              flight.flightId, flight.origin, flight.destination, 
-                              flight.totalSeats, flight.status, 
-                              flight.economySeatPrice, flight.businessSeatPrice, 
-                              flight.firstSeatPrice, flight.residenceSeatPrice);
+        System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s\n", 
+                        "Flight ID", "Origin", "Destination", "Total Seats", "Status", 
+                        "Economy Price", "Business Price", "First Price", "Residence Price");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+        for (Flight flight : flightList) {
+            if (flight != null) {
+                System.out.printf("%-15s %-15s %-15s %-15d %-15s %.2f            %.2f            %.2f            %.2f\n", 
+                                flight.flightId, flight.origin, flight.destination, 
+                                flight.totalSeats, flight.status, 
+                                flight.economySeatPrice, flight.businessSeatPrice, 
+                                flight.firstSeatPrice, flight.residenceSeatPrice);
             }
         }
     }
@@ -372,16 +374,18 @@ class FlightSchedule {
 }
 
 // Main class
+@SuppressWarnings("resource")
 public class Main {
     public static void main(String[] args) {
         //AirlineReservationSystem system = new AirlineReservationSystem();
         Manager manager = new Manager("admin", "password");
         FlightSchedule schedule = new FlightSchedule();
 
-        Scanner sc = new Scanner(System.in);
+        //Scanner sc = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
+            Scanner sc = new Scanner(System.in);
             System.out.println("\nMenu: ");
             System.out.println("1. Add Flight");
             System.out.println("2. Update Flight");
@@ -390,7 +394,7 @@ public class Main {
             System.out.println("5. Exit");
             System.out.print("Choose an option: ");
             int choice = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // Consume newline
 
             switch (choice) {
                 case 1:
@@ -429,6 +433,5 @@ public class Main {
                     System.out.println("Invalid choice. Please try again.");
             }
         }
-        sc.close();
     }
 }
