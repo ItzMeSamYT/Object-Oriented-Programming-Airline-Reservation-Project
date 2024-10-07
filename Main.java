@@ -121,7 +121,6 @@ class AirlineReservationSystem {
                     String travelerUsername = scanner.nextLine();
                     System.out.print("Enter Traveler Password: ");
                     String travelerPassword = scanner.nextLine();
-                    @SuppressWarnings("unused")
                     Traveler traveler = new Traveler(travelerUsername, travelerPassword, flightSchedule);
                     try {
                         traveler.t.join();
