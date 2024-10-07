@@ -20,7 +20,7 @@ public class Flight {
     public int firstSeats;
     public double firstSeatPrice;
     public int residenceSeats;
-    public double residenceSeatPrice; // Add residence seat price
+    public double residenceSeatPrice;
 
     CateringMenuItem[] cateringMenu = new CateringMenuItem[10]; // Assuming a max of 10 menu items
 
@@ -99,5 +99,20 @@ public class Flight {
             System.out.println("Flight not found.");
         }
         
+    }
+
+    public String displayPrice(String classType) {
+        switch(classType) {
+            case "Economy":
+                return "$"+economySeatPrice;
+            case "Business":
+                return "$"+businessSeatPrice;
+            case "First":
+                return "$"+firstSeatPrice;
+            case "Residence":
+                return "$"+residenceSeatPrice;
+            default:
+                return "Invalid class.";
+        }
     }
 }

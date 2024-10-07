@@ -117,8 +117,8 @@ class AirlineReservationSystem {
                     String travelerUsername = scanner.nextLine();
                     System.out.print("Enter Traveler Password: ");
                     String travelerPassword = scanner.nextLine();
-                    Traveler traveler = new Traveler(travelerUsername, travelerPassword);
-                    traveler.displayInfo();
+                    //Traveler traveler = new Traveler(travelerUsername, travelerPassword);
+                    //traveler.displayInfo();
                     break;
 
                 case 3:
