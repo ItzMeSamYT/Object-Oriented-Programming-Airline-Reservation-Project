@@ -73,6 +73,57 @@ public class Flight {
         }
     }
 
+    public int getVacantSeats(String classType) {
+        switch (classType) {
+            case "Economy":
+                return vacantEconomySeats;
+            case "Business":
+                return vacantBusinessSeats;
+            case "First":
+                return vacantFirstSeats;
+            case "Residence":
+                return vacantResidenceSeats;
+            default:
+                return -1;
+        }
+    }
+
+    public void updateVacantSeats(String classType, int change) {
+        switch (classType) {
+            case "Economy":
+                vacantEconomySeats += change;
+                economySeatPrice = economySeatPrice / (1 + (change / (double)economySeats)*0.1);
+                break;
+            case "Business":
+                vacantBusinessSeats += change;
+                businessSeatPrice = businessSeatPrice / (1 + (change / (double)businessSeats)*0.1);
+                break;
+            case "First":
+                vacantFirstSeats += change;
+                firstSeatPrice = firstSeatPrice / (1 + (change / (double)firstSeats)*0.1);
+                break;
+            case "Residence":
+                vacantResidenceSeats += change;
+                residenceSeatPrice = residenceSeatPrice / (1 + (change / (double)residenceSeats)*0.1);
+                break;
+        }
+    }
+
+    public int getTotalSeats(String classType) {
+        switch (classType) {
+            case "Economy":
+                return economySeats;
+            case "Business":
+                return businessSeats;
+            case "First":
+                return firstSeats;
+            case "Residence":
+                return residenceSeats;
+            default:
+                return -1;
+        }
+    }
+
     public void printCateringMenu() {
         cateringMenu.printCateringMenu();
     }
