@@ -5,10 +5,9 @@ import java.util.Scanner;
 public class DutyFreeManagement {
     DutyFreeItem[] dutyFreeItems;
     private int itemCount;
-    private final int maxItems;
+    private final int maxItems=100;
 
-    public DutyFreeManagement(int maxItems) {
-        this.maxItems = maxItems;
+    public DutyFreeManagement() {
         dutyFreeItems = new DutyFreeItem[maxItems];
         itemCount = 0;
     }
@@ -31,7 +30,7 @@ public class DutyFreeManagement {
 
             switch (choice) {
                 case 1:
-                    addDutyFreeItem(scanner);
+                    addDutyFreeItem();
                     break;
                 case 2:
                     printDutyFreeItems();
@@ -51,7 +50,9 @@ public class DutyFreeManagement {
         }
     }
 
-    public void addDutyFreeItem(Scanner sc) {
+    public void addDutyFreeItem() {
+        @SuppressWarnings("resource")
+        Scanner sc = new Scanner(System.in);
         if (itemCount >= maxItems) {
             System.out.println("Cannot add more items. Duty-free menu is full.");
             return;

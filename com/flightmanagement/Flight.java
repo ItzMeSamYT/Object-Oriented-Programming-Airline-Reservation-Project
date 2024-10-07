@@ -1,5 +1,6 @@
 package com.flightmanagement;
 import com.catering.*;
+import com.dutyfree.DutyFreeManagement;
 import com.exceptions.InvalidChoiceException;
 
 public class Flight {
@@ -24,6 +25,7 @@ public class Flight {
     public int vacantResidenceSeats;
     public double residenceSeatPrice;
     CateringMenuManagement cateringMenu = new CateringMenuManagement();
+    DutyFreeManagement DutyFree = new DutyFreeManagement();
 
     public void manageCateringMenu() {
         try {
@@ -46,5 +48,13 @@ public class Flight {
             default:
                 return "";
         }
+    }
+
+    public void printCateringMenu() {
+        cateringMenu.printCateringMenu();
+    }
+
+    public void printDutyFreeItems() {
+        DutyFree.printDutyFreeItems();
     }
 }

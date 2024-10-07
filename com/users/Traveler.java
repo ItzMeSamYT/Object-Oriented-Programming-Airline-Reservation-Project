@@ -5,19 +5,22 @@ import com.exceptions.InvalidChoiceException;
 
 
 public class Traveler extends User implements Runnable {
-    Thread t;
+    public Thread t;
     boolean travelerMenu = true;
     Scanner scanner = new Scanner(System.in);
-
+    int noOfSeats;
+    String classChoice;
     String email;
     String contactNo;
 
     FlightSchedule mainFlightSchedule;
-    FlightSchedule filtered;
+    FlightSchedule filtered = new FlightSchedule();
 
     public Traveler(String loginID, String password, FlightSchedule flightSchedule) {
         super(loginID, password);
         mainFlightSchedule = flightSchedule;
+        t = new Thread(this, loginID);
+        t.start();
     }
 
     @Override
@@ -32,11 +35,11 @@ public class Traveler extends User implements Runnable {
         contactNo = scanner.nextLine();
     }
 
-    public void bookFlight() throws InvalidChoiceException {
+    synchronized public void bookFlight() throws InvalidChoiceException {
         System.out.println("FLIGHT BOOKING");
         System.out.print("Enter origin: ");
         String origin = scanner.nextLine();
-        System.out.println("Enter destination: ");
+        System.out.print("Enter destination: ");
         String destination = scanner.nextLine();
         for (Flight f : mainFlightSchedule.flightList) {
             if (f != null && f.origin.equals(origin) && f.destination.equals(destination)) {
@@ -69,27 +72,72 @@ public class Traveler extends User implements Runnable {
 
         Flight selected = filtered.flightList[index];
         System.out.println("Enter travel class (Economy/Business/First/Residence): ");
-        String classChoice = scanner.nextLine();
+        classChoice = scanner.nextLine();
         if (!classChoice.equals("Economy") && !classChoice.equals("Business") && !classChoice.equals("First") && !classChoice.equals("Residence")) {
             throw new InvalidChoiceException("Invalid choice of traveling class.");
         }
         System.out.println("Price of each seat: "+selected.displayPrice(classChoice));
 
         System.out.print("Enter number of seats to book: ");
-        int noOfSeats = scanner.nextInt();
+        noOfSeats = scanner.nextInt();
         scanner.nextLine();
+        switch(classChoice) {
+            case "Economy":
+                if (noOfSeats<selected.vacantEconomySeats) {
+                    System.out.println("Not enough vacant seats on flight.");
+                } else {
+                    selected.vacantEconomySeats-=noOfSeats;
+                    System.out.println("Successfully booked "+noOfSeats+" economy class seats!");
+                }
+                break;
+            case "Business":
+                if (noOfSeats<selected.vacantBusinessSeats) {
+                    System.out.println("Not enough vacant seats on flight.");
+                } else {
+                    selected.vacantBusinessSeats-=noOfSeats;
+                    System.out.println("Successfulyl booked "+noOfSeats+" business class seats!");
+                }
+                break;
+            case "First":
+                if (noOfSeats<selected.vacantFirstSeats) {
+                    System.out.println("Not enough vacant seats on flight.");
+                } else {
+                    selected.vacantFirstSeats-=noOfSeats;
+                    System.out.println("Successfully booked "+noOfSeats+" seats!");
+                }
+                break;
+            case "Residence":
+                if (noOfSeats<selected.vacantResidenceSeats) {
+                    System.out.println("Not enough vacant seats on flight.");
+                } else {
+                    selected.vacantResidenceSeats-=noOfSeats;
+                    System.out.println("Successfully booked "+noOfSeats+" seats!");
+                }
+                break;
+        }
+
+        if (selected.cateringAvailable) {
+            System.out.println("\nCatering is available on your flight!");
+            System.out.println("The catering menu is as follows, please ask our staff to purchase any item(s)!");
+            selected.printCateringMenu();
+        }
+
+        if (selected.dutyFreeAvailable) {
+            System.out.println("\nDuty-Free items are available for your flight!");
+            System.out.println("Duty-Free items are as follows, please ask our staff to purchase any item(s)!");
+            selected.printDutyFreeItems();
+        }
     }
 
     
 
     @Override
     public void run() {
+        displayInfo();
         while (travelerMenu) {
             System.out.println("\n1. Input Personal Details");
             System.out.println("2. View Flight Schedule");
             System.out.println("3. Book a Flight");
-            //System.out.println("4. View Catering Menu");
-            //System.out.println("5. View and Purchase Duty-Free Items");
             System.out.println("4. Logout");
             System.out.print("Choose an option: ");
             int travelerChoice = scanner.nextInt();
@@ -109,12 +157,6 @@ public class Traveler extends User implements Runnable {
                         System.out.println(e.getMessage());
                     }
                     break;
-                /*case 4:
-                    viewCateringMenu();
-                    break;
-                case 5:
-                    viewAndPurchaseDutyFree();
-                    break;*/
                 case 4:
                     travelerMenu = false;
                     break;

@@ -1,12 +1,17 @@
 import java.util.Scanner;
+import com.users.*;
+import com.catering.*;
+import com.dutyfree.*;
+import com.flightmanagement.*;
+import com.exceptions.*;
 
 @SuppressWarnings("resource")
 class AirlineReservationSystem {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         FlightSchedule flightSchedule = new FlightSchedule();
-        DutyFreeManagement dutyFreeManagement = new DutyFreeManagement(100);
-        CateringMenuManagement cateringMenuManagement = new CateringMenuManagement(flightSchedule);
+        DutyFreeManagement dutyFreeManagement = new DutyFreeManagement();
+        CateringMenuManagement cateringMenuManagement = new CateringMenuManagement();
 
         while (true) {
             System.out.println("1. Manager Login");
@@ -89,7 +94,11 @@ class AirlineReservationSystem {
                                     dutyFreeManagement.manageDutyFree();
                                     break;
                                 case 3:
-                                    cateringMenuManagement.manageCatering();
+                                    try {
+                                        cateringMenuManagement.manageCatering();
+                                    } catch (InvalidChoiceException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                     break;
                                 case 4:
                                     managerMenu = false;
@@ -112,8 +121,11 @@ class AirlineReservationSystem {
                     String travelerUsername = scanner.nextLine();
                     System.out.print("Enter Traveler Password: ");
                     String travelerPassword = scanner.nextLine();
-                    //Traveler traveler = new Traveler(travelerUsername, travelerPassword);
-                    //traveler.displayInfo();
+                    @SuppressWarnings("unused")
+                    Traveler traveler = new Traveler(travelerUsername, travelerPassword, flightSchedule);
+                    try {
+                        traveler.t.join();
+                    } catch (InterruptedException e) {}
                     break;
 
                 case 3:
