@@ -43,7 +43,6 @@ public class Manager extends User {
         System.out.print("Catering Availability (true/false): ");
         flight.cateringAvailable = sc.nextBoolean();
         sc.nextLine(); // Consume newline
-
         if (flight.cateringAvailable) {
             flight.manageCateringMenu();
         }
@@ -51,6 +50,9 @@ public class Manager extends User {
         System.out.print("Duty-Free Availability (true/false): ");
         flight.dutyFreeAvailable = sc.nextBoolean();
         sc.nextLine(); // Consume newline
+        if (flight.dutyFreeAvailable) {
+            flight.manageDutyFree();
+        }
 
         System.out.print("Status: ");
         flight.status = sc.nextLine();
@@ -109,7 +111,7 @@ public class Manager extends User {
             throw new InvalidChoiceException("Flight not found.");
         }
 
-        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Status");
+        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Duty-Free Availability\n9. Status \n10. Exit");
         System.out.print("What do you want to update: ");
         int choice = sc.nextInt();
         sc.nextLine(); // Consume newline
@@ -165,13 +167,24 @@ public class Manager extends User {
                 }
                 break;
             case 8:
+                System.out.println("Current Duty-Free Availability: "+flight.dutyFreeAvailable);
+                System.out.print("New Duty-Free Availability: ");
+                flight.dutyFreeAvailable = sc.nextBoolean();
+                sc.nextLine();
+                if (flight.dutyFreeAvailable) {
+                    flight.manageDutyFree();
+                }
+                break;
+            case 9:
                 System.out.println("Current Status: " + flight.status);
                 System.out.print("New Status: ");
                 flight.status = sc.nextLine();
                 System.out.println("Status updated successfully!");
                 break;
+            case 10:
+                System.out.println("Exiting...");
+                break;
             default:
-                
                 throw new InvalidChoiceException("Invalid choice!");
         }
         

@@ -1,6 +1,7 @@
 package com.dutyfree;
 
 import java.util.Scanner;
+import com.exceptions.*;
 
 public class DutyFreeManagement {
     DutyFreeItem[] dutyFreeItems;
@@ -12,7 +13,8 @@ public class DutyFreeManagement {
         itemCount = 0;
     }
 
-    public void manageDutyFree() {
+    public void manageDutyFree() throws InvalidChoiceException {
+        @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -36,16 +38,16 @@ public class DutyFreeManagement {
                     printDutyFreeItems();
                     break;
                 case 3:
-                    updateDutyFreeItem(scanner);
+                    updateDutyFreeItem();
                     break;
                 case 4:
-                    deleteDutyFreeItem(scanner);
+                    deleteDutyFreeItem();
                     break;
                 case 5:
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    throw new InvalidChoiceException("Invalid Menu Choice.");
             }
         }
     }
@@ -81,7 +83,9 @@ public class DutyFreeManagement {
         }
     }
 
-    public void updateDutyFreeItem(Scanner sc) {
+    public void updateDutyFreeItem() {
+        @SuppressWarnings("resource")
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the index of the item to update (0-" + (itemCount - 1) + "): ");
         int index = sc.nextInt();
         if (index < 0 || index >= itemCount) {
@@ -110,7 +114,9 @@ public class DutyFreeManagement {
         System.out.println("Duty-free item updated successfully!");
     }
 
-    public void deleteDutyFreeItem(Scanner sc) {
+    public void deleteDutyFreeItem() {
+        @SuppressWarnings("resource")
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter the index of the item to delete (0-" + (itemCount - 1) + "): ");
         int index = sc.nextInt();
         if (index < 0 || index >= itemCount) {

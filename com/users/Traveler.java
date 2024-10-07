@@ -15,6 +15,7 @@ public class Traveler extends User implements Runnable {
 
     FlightSchedule mainFlightSchedule;
     FlightSchedule filtered = new FlightSchedule();
+    Flight booked;
 
     public Traveler(String loginID, String password, FlightSchedule flightSchedule) {
         super(loginID, password);
@@ -28,14 +29,28 @@ public class Traveler extends User implements Runnable {
         System.out.println("Welcome " + loginID + "!\n");
     }
 
-    public void inputDetails() {
+    private void inputDetails() {
         System.out.print("Enter Email ID: ");
         email = scanner.nextLine();
         System.out.print("Enter contact number: ");
         contactNo = scanner.nextLine();
     }
 
-    synchronized public void bookFlight() throws InvalidChoiceException {
+    private void genInvoice() {
+        System.out.println("========================================");
+        System.out.println("                INVOICE                 ");
+        System.out.println("========================================");
+        System.out.printf("%-15s %s", "Flight ID: "+booked.flightId, "Class: "+classChoice);
+        System.out.printf("%-15s %s", "No of seats booked: "+noOfSeats, "Singular Seat Price"+booked.displayPrice(classChoice));
+        double subTotal =  booked.getPrice(classChoice) * noOfSeats;
+        double serviceTax = 0.05*subTotal;
+        System.out.printf("%-15s $%.2f",  "Sub Total: ", subTotal);
+        System.out.printf("%-15s $%.2f",  "Service Tax: ", serviceTax);
+        System.out.printf("%-15s $%.2f", "Total:  ", subTotal+serviceTax);
+        System.out.println("========================================");
+    }
+
+    synchronized private void bookFlight() throws InvalidChoiceException {
         System.out.println("FLIGHT BOOKING");
         System.out.print("Enter origin: ");
         String origin = scanner.nextLine();
@@ -116,20 +131,57 @@ public class Traveler extends User implements Runnable {
                 break;
         }
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {}
+
         if (selected.cateringAvailable) {
             System.out.println("\nCatering is available on your flight!");
             System.out.println("The catering menu is as follows, please ask our staff to purchase any item(s)!");
             selected.printCateringMenu();
         }
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {}
+
         if (selected.dutyFreeAvailable) {
             System.out.println("\nDuty-Free items are available for your flight!");
             System.out.println("Duty-Free items are as follows, please ask our staff to purchase any item(s)!");
             selected.printDutyFreeItems();
         }
+        booked = selected;
+        genInvoice();
     }
 
-    
+    private void cancelBooking() {
+        System.out.println("Are you sure you want to cancel your booking for flight "+booked.flightId+" from "+booked.origin+" to "+booked.destination+"?");
+        System.out.println("Please enter 'yes' to confirm cancellation.");
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("yes")) {
+            System.out.println("Booking cancelled successfully!");
+            switch (classChoice) {
+                case "Economy":
+                    booked.vacantEconomySeats+=noOfSeats;
+                    break;
+                case "First":
+                    booked.vacantFirstSeats+=noOfSeats;
+                    break;
+                case "Residence":
+                    booked.vacantResidenceSeats+=noOfSeats;
+                    break;
+                case "Business":
+                    booked.vacantBusinessSeats+=noOfSeats;
+                    break;
+            }
+            booked = null;
+            noOfSeats=0;
+        } else {
+            System.out.println("Booking not cancelled.");
+        }
+    }
 
     @Override
     public void run() {
@@ -138,7 +190,8 @@ public class Traveler extends User implements Runnable {
             System.out.println("\n1. Input Personal Details");
             System.out.println("2. View Flight Schedule");
             System.out.println("3. Book a Flight");
-            System.out.println("4. Logout");
+            System.out.println("4. Cancel Booking");
+            System.out.println("5. Logout");
             System.out.print("Choose an option: ");
             int travelerChoice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -158,6 +211,9 @@ public class Traveler extends User implements Runnable {
                     }
                     break;
                 case 4:
+                    cancelBooking();
+                    break;
+                case 5:
                     travelerMenu = false;
                     break;
                 default:

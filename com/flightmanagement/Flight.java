@@ -35,6 +35,14 @@ public class Flight {
         }
     }
 
+    public void manageDutyFree() {
+        try {
+            DutyFree.manageDutyFree();
+        } catch (InvalidChoiceException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public String displayPrice(String classType) {
         switch(classType) {
             case "Economy":
@@ -47,6 +55,21 @@ public class Flight {
                 return "$"+residenceSeatPrice;
             default:
                 return "";
+        }
+    }
+
+    public double getPrice(String classType) {
+        switch (classType) {
+            case "Economy":
+                return economySeatPrice;
+            case "Business":
+                return businessSeatPrice;
+            case "First":
+                return firstSeatPrice;
+            case "Residence":
+                return residenceSeatPrice;
+            default:
+                return -1;
         }
     }
 

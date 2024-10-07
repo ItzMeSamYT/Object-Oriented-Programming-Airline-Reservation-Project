@@ -91,7 +91,11 @@ class AirlineReservationSystem {
                                     }
                                     break;
                                 case 2:
-                                    dutyFreeManagement.manageDutyFree();
+                                    try {
+                                        dutyFreeManagement.manageDutyFree();
+                                    } catch (InvalidChoiceException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                     break;
                                 case 3:
                                     try {
