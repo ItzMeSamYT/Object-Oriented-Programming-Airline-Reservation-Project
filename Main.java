@@ -1,9 +1,4 @@
 import java.util.Scanner;
-import com.exceptions.*;
-import com.users.*;
-import com.catering.*;
-import com.flightmanagement.*;
-import com.dutyfree.*;
 
 @SuppressWarnings("resource")
 class AirlineReservationSystem {

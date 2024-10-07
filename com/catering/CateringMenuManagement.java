@@ -1,21 +1,20 @@
 package com.catering;
 
 import java.util.Scanner;
-import com.flightmanagement.*;
+import com.exceptions.*;
 
 public class CateringMenuManagement {
-    FlightSchedule flightSchedule;
     CateringMenuItem[] cateringMenu;
     private int menuCount;
     private final int maxMenuItems = 100; // Set the max size for catering items
 
-    public CateringMenuManagement(FlightSchedule flightSchedule) {
-        this.flightSchedule = flightSchedule;
+    public CateringMenuManagement() {
         cateringMenu = new CateringMenuItem[maxMenuItems];
         menuCount = 0;
     }
 
-    public void manageCatering() {
+    @SuppressWarnings("resource")
+    public void manageCatering() throws InvalidChoiceException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -30,7 +29,7 @@ public class CateringMenuManagement {
 
             switch (choice) {
                 case 1:
-                    addCateringMenu(scanner);
+                    addCateringMenu();
                     break;
                 case 2:
                     printCateringMenu();
@@ -39,12 +38,14 @@ public class CateringMenuManagement {
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    throw new InvalidChoiceException("Invalid Menu Option.");
             }
         }
     }
 
-    public void addCateringMenu(Scanner sc) {
+    @SuppressWarnings("resource")
+    public void addCateringMenu() {
+        Scanner sc = new Scanner(System.in);
         if (menuCount >= maxMenuItems) {
             System.out.println("Cannot add more items. Catering menu is full.");
             return;

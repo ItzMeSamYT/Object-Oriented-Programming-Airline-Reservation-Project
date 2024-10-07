@@ -44,6 +44,10 @@ public class Manager extends User {
         flight.cateringAvailable = sc.nextBoolean();
         sc.nextLine(); // Consume newline
 
+        if (flight.cateringAvailable) {
+            flight.manageCateringMenu();
+        }
+
         System.out.print("Duty-Free Availability (true/false): ");
         flight.dutyFreeAvailable = sc.nextBoolean();
         sc.nextLine(); // Consume newline
@@ -157,9 +161,7 @@ public class Manager extends User {
                 sc.nextLine(); // Consume newline
                 System.out.println("Catering availability updated successfully!");
                 if (flight.cateringAvailable) {
-                    flight.addCateringMenu("Economy");
-                    flight.addCateringMenu("Business");
-                    flight.addCateringMenu("First");
+                    flight.manageCateringMenu();
                 }
                 break;
             case 8:
