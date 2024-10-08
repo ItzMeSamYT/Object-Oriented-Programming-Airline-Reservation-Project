@@ -1,7 +1,7 @@
 package com.flightmanagement;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+import com.exceptions.InvalidChoiceException;
 
 public class FlightReport {
     private FlightSchedule flightSchedule;
@@ -13,10 +13,9 @@ public class FlightReport {
     }
 
     public void generateReport() {
-        // Check if the flight schedule is empty
-        if (flightSchedule.isEmpty()) {
+        if (flightSchedule.flightCount==0) {
             System.out.println("No flights available in the schedule.");
-            return; // Exit if no flights are available
+            return;
         }
 
         System.out.println("========================================");
@@ -75,38 +74,79 @@ public class FlightReport {
         System.out.println("========================================");
     }
     
+    private void addDate(UNIQUEDATE[] dateList, DATE date) {
+        for (int i = 0; i < dateList.length; i++) {
+            if (dateList[i] == null) {
+                dateList[i] = new UNIQUEDATE(date);
+                break;
+            }
+        }
+    }
+
     // Method to find periods of frequent bookings
-    public void reportFrequentBookingPeriods(ArrayList<DATE> bookingDates) {
-        ArrayList<DATE> uniqueDates = new ArrayList<>();
-        ArrayList<Integer> counts = new ArrayList<>();
+    public void reportFrequentBookingPeriods() {
+        DATE[] bookingDates = new DATE[flightSchedule.flightCount];
+        int i;
 
-        for (DATE date : bookingDates) {
+        for (i=0; i<flightSchedule.flightCount; i++) {
+            bookingDates[i] = flightSchedule.flightList[i].date;
+        }
+
+        UNIQUEDATE[] uniqueDates = new UNIQUEDATE[i+1];
+        for (DATE d1 : bookingDates) {
             boolean exists = false;
-
-            // Check if the date is already in uniqueDates
-            for (int i = 0; i < uniqueDates.size(); i++) {
-                DATE uniqueDate = uniqueDates.get(i);
-                if (uniqueDate.day == date.day && uniqueDate.month == date.month && uniqueDate.year == date.year) {
-                    counts.set(i, counts.get(i) + 1); // Increment count
+            for (int j=0; j<uniqueDates.length; j++) {
+                if  (d1.equals(uniqueDates[j].date)) {
+                    uniqueDates[j].count++;
                     exists = true;
-                    break;
                 }
             }
 
-            // If the date is not found, add it
             if (!exists) {
-                uniqueDates.add(date); // Add unique date
-                counts.add(1); // Initialize count to 1
+                addDate(uniqueDates, d1);
             }
         }
 
-        // Print results
         System.out.println("========================================");
         System.out.println("   FREQUENT BOOKING PERIODS            ");
         System.out.println("========================================");
-        for (int i = 0; i < uniqueDates.size(); i++) {
-            System.out.printf("Date: %s, Bookings: %d\n", uniqueDates.get(i), counts.get(i));
+        for (int j=0; j<uniqueDates.length; j++) {
+            if (uniqueDates[j]!=null) {
+                System.out.printf("Date: %s, Bookings: %d\n", uniqueDates[j].date, uniqueDates[j].count);
+            }
         }
         System.out.println("========================================");
+    }
+
+    public void menu() throws InvalidChoiceException {
+        boolean flightreport = true;
+        while (flightreport) {
+            System.out.println("\n1. Flight Report");
+            System.out.println("2. Full Capacity Flights");
+            System.out.println("3. Frequent Booking Periods");
+            System.out.println("4. Frequent Destinations");
+            System.out.println("5. Back to Manager Menu");
+            System.out.print("Choose an option: ");
+            int flightReportChoice = scanner.nextInt();
+            System.out.println();
+            switch (flightReportChoice) {
+                case 1:
+                    generateReport();
+                    break;
+                case 2:
+                    reportFlightsWithCompleteCapacity();
+                    break;
+                case 3:
+                    reportFrequentBookingPeriods();
+                    break;
+                case 4:
+                    //reportMostFrequentedDestinations();
+                    break;
+                case 5:
+                    flightreport = false;
+                default:
+                    throw new InvalidChoiceException("Invalid Menu Choice");
+            }
+        }
     }
 }

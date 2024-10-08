@@ -1,7 +1,4 @@
 package com.users;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 import com.flightmanagement.*;
 import com.exceptions.InvalidChoiceException;
@@ -58,13 +55,9 @@ public class Traveler extends User implements Runnable {
     }
 
     private void genInvoice() {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = currentDateTime.format(formatter);
         System.out.println("========================================");
         System.out.println("                INVOICE                 ");
         System.out.println("========================================");
-        System.out.printf("%-15s", "Date of Purchase: "+formattedDateTime);
         System.out.printf("%-15s %s\n", "Flight ID: "+booked.flightId, "Class: "+classChoice);
         System.out.printf("%-15s", "Departure Date: "+booked.date);
         System.out.printf("%-15s %s\n", "No of seats booked: "+noOfSeats, "Singular Seat Price: "+booked.displayPrice(classChoice));
@@ -77,13 +70,9 @@ public class Traveler extends User implements Runnable {
     }
 
     synchronized private void bookFlight() throws InvalidChoiceException {
-        ArrayList<DATE> bookingDates = new ArrayList<>();
         System.out.println("FLIGHT BOOKING");
         System.out.println("Enter Date of Travel: ");
         DATE d = new DATE();
-        if (!bookingDates.contains(d)) {
-            bookingDates.add(d);
-        }
         System.out.print("Enter origin: ");
         String origin = scanner.nextLine();
         System.out.print("Enter destination: ");
@@ -176,6 +165,10 @@ public class Traveler extends User implements Runnable {
         } else {
             System.out.println("Booking not cancelled.");
         }
+    }
+
+    public Flight getBooked() {
+        return booked;
     }
 
     @Override

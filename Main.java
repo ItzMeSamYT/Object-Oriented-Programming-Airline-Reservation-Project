@@ -73,40 +73,11 @@ class AirlineReservationSystem {
 
                                         switch (flightManagementChoice) {
                                             case 1:
-                                                boolean flightreport = true;
-                                                while (flightreport) {
-                                                    System.out.println("\n1. Flight Report");
-                                                    System.out.println("2. Full Capacity Flights");
-                                                    System.out.println("3. Frequent Booking Periods");
-                                                    System.out.println("4. Frequent Destinations");
-                                                    System.out.println("5. Back to Manager Menu");
-                                                    System.out.print("Choose an option: ");
-                                                    int flightReportChoice = scanner.nextInt();
-                                                    System.out.println();
-                                                    switch (flightReportChoice) {
-                                                        case 1:
-                                                            flightReport.generateReport();
-                                                            break;
-                                                        case 2:
-                                                            flightReport.reportFlightsWithCompleteCapacity();
-                                                            break;
-                                                        case 3:
-                                                            flightReport.reportFrequentBookingPeriods(traveler.bookFlight.bookingDates); //error
-                                                            break;
-                                                        case 4:
-                                                            flightReport.reportMostFrequentedDestinations();
-                                                            break;
-                                                        case 5:
-                                                            flightreport = false;
-                                                        default:
-                                                        try {
-                                                            throw new InvalidChoiceException("Invalid choice. Please try again.");
-                                                        } catch (InvalidChoiceException e) {
-                                                            System.out.println(e.getMessage());
-                                                        }
-                                                    }
+                                                try {
+                                                    flightReport.menu();
+                                                } catch (InvalidChoiceException e) {
+                                                    System.out.println(e.getMessage());
                                                 }
-
                                             case 2:
                                                 try {
                                                     manager.addFlight(flightSchedule);

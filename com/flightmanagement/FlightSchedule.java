@@ -3,7 +3,7 @@ package com.flightmanagement;
 public class FlightSchedule {
     public int maxSize = 100; // Moved maxSize inside the class
     public Flight[] flightList;
-    private int flightCount = 0;
+    public int flightCount = 0;
 
     public FlightSchedule() {
         flightList = new Flight[maxSize];
