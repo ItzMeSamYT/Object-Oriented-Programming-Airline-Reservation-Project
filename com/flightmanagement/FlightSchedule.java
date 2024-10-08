@@ -11,7 +11,6 @@ public class FlightSchedule {
 
     public void addFlight(Flight f) {
         flightList[flightCount++] = f;
-        System.out.println("Successfully added flight " + f.flightId + " to the schedule.");
     }
 
     public void viewFlights() {

@@ -91,7 +91,7 @@ public class Manager extends User {
 
         // Add the flight to the schedule
         flightSchedule.addFlight(flight);
-        
+        System.out.println("Successfully added flight " + flight.flightId + " to the schedule.");
     }
 
     // Update flight method

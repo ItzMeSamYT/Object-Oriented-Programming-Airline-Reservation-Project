@@ -104,7 +104,7 @@ public class Traveler extends User implements Runnable {
         }
 
         Flight selected = filtered.flightList[index];
-        System.out.println("Enter travel class (Economy/Business/First/Residence): ");
+        System.out.print("Enter travel class (Economy/Business/First/Residence): ");
         classChoice = scanner.nextLine();
         if (!classChoice.equals("Economy") && !classChoice.equals("Business") && !classChoice.equals("First") && !classChoice.equals("Residence")) {
             throw new InvalidChoiceException("Invalid choice of traveling class.");
