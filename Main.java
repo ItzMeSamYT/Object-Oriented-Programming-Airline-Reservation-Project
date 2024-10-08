@@ -40,101 +40,12 @@ class AirlineReservationSystem {
                     String managerUsername = scanner.nextLine();
                     System.out.print("Enter Manager Password: ");
                     String managerPassword = scanner.nextLine();
-
                     // Simple check for manager credentials (can be expanded to check from a list or database)
-                    if (managerUsername.equals("admin") && managerPassword.equals("admin123")) {
-                        Manager manager = new Manager(managerUsername, managerPassword);
+                    if (managerUsername.equals("admin") && managerPassword.equals("Admin$123")) {
+                        Manager manager = new Manager(managerUsername, managerPassword, flightSchedule,  cateringMenuManagement, dutyFreeManagement, flightReport);
                         manager.displayInfo();
                         System.out.println();
-
-                        boolean managerMenu = true;
-                        while (managerMenu) {
-                            System.out.println("1. Manage Flights");
-                            System.out.println("2. Manage Duty-Free");
-                            System.out.println("3. Manage Catering");
-                            System.out.println("4. Logout");
-                            System.out.print("Choose an option: ");
-                            int managerChoice = scanner.nextInt();
-                            System.out.println();
-
-                            switch (managerChoice) {
-                                case 1:
-                                    boolean flightManagement = true;
-                                    while (flightManagement) {
-                                        System.out.println("\n1. Flight Report");
-                                        System.out.println("2. Add Flight");
-                                        System.out.println("3. Update Flight");
-                                        System.out.println("4. View Flights");
-                                        System.out.println("5. Delete Flight");
-                                        System.out.println("6. Back to Manager Menu");
-                                        System.out.print("Choose an option: ");
-                                        int flightManagementChoice = scanner.nextInt();
-                                        System.out.println();
-
-                                        switch (flightManagementChoice) {
-                                            case 1:
-                                                try {
-                                                    flightReport.menu();
-                                                } catch (InvalidChoiceException e) {
-                                                    System.out.println(e.getMessage());
-                                                }
-                                            case 2:
-                                                try {
-                                                    manager.addFlight(flightSchedule);
-                                                } catch (ExceededMaxSizeException e) {
-                                                    System.out.println(e.getMessage());
-                                                }
-                                                break;
-                                            case 3:
-                                                try {
-                                                    manager.updateFlight(flightSchedule);
-                                                } catch (InvalidChoiceException e) {
-                                                    System.out.println(e.getMessage());
-                                                }
-                                                break;
-                                            case 4:
-                                                flightSchedule.viewFlights();
-                                                break;
-                                            case 5:
-                                                manager.deleteFlight(flightSchedule);
-                                                break;
-                                            case 6:
-                                                flightManagement = false;
-                                                break;
-                                            default:
-                                                try {
-                                                    throw new InvalidChoiceException("Invalid choice. Please try again.");
-                                                } catch (InvalidChoiceException e) {
-                                                    System.out.println(e.getMessage());
-                                                }
-                                        }
-                                    }
-                                    break;
-                                case 2:
-                                    try {
-                                        dutyFreeManagement.manageDutyFree();
-                                    } catch (InvalidChoiceException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 3:
-                                    try {
-                                        cateringMenuManagement.manageCatering();
-                                    } catch (InvalidChoiceException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                    break;
-                                case 4:
-                                    managerMenu = false;
-                                    break;
-                                default:
-                                    try {
-                                        throw new InvalidChoiceException("Invalid choice. Please try again.");
-                                    } catch (InvalidChoiceException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                            }
-                        }
+                        manager.menu();
                     } else {
                         System.out.println("Invalid Manager Username or Password. Try again.");
                     }

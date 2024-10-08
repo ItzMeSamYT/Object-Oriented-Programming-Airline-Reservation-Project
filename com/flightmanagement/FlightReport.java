@@ -18,11 +18,11 @@ public class FlightReport {
             return;
         }
 
-        System.out.println("========================================");
-        System.out.println("              FLIGHT REPORT            ");
-        System.out.println("========================================");
+        System.out.println("==========================================================================================");
+        System.out.println("                                      FLIGHT REPORT                                       ");
+        System.out.println("==========================================================================================");
         System.out.printf("%-15s %-15s %-15s %-15s %-15s\n", "Flight ID", "Flight Type", "Status", "Total Seats", "Available Seats");
-        System.out.println("========================================");
+        System.out.println("==========================================================================================");
 
         for (Flight flight : flightSchedule.flightList) {
             if (flight != null) {
@@ -31,14 +31,11 @@ public class FlightReport {
                     flight.type, 
                     flight.status, 
                     flight.totalSeats, 
-                    flight.getVacantSeats("Economy") + 
-                    flight.getVacantSeats("Business") + 
-                    flight.getVacantSeats("First") + 
-                    flight.getVacantSeats("Residence"));
+                    flight.getVacantSeats());
             }
         }
 
-        System.out.println("========================================");
+        System.out.println("==========================================================================================");
     }
 
     // Method to find flights with complete capacity
@@ -96,7 +93,7 @@ public class FlightReport {
         for (DATE d1 : bookingDates) {
             boolean exists = false;
             for (int j=0; j<uniqueDates.length; j++) {
-                if  (d1.equals(uniqueDates[j].date)) {
+                if  (uniqueDates[j] !=null && d1.equals(uniqueDates[j].date)) {
                     uniqueDates[j].count++;
                     exists = true;
                 }
@@ -144,6 +141,7 @@ public class FlightReport {
                     break;
                 case 5:
                     flightreport = false;
+                    break;
                 default:
                     throw new InvalidChoiceException("Invalid Menu Choice");
             }

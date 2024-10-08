@@ -1,18 +1,96 @@
 package com.users;
+import com.catering.CateringMenuManagement;
+import com.dutyfree.DutyFreeManagement;
 import com.exceptions.*;
 import com.flightmanagement.*;
 import java.util.Scanner;
 
 @SuppressWarnings("resource")
 public class Manager extends User {
-    public Manager(String loginID, String password) {
+    FlightSchedule flightSchedule;
+    CateringMenuManagement cateringMenuManagement;
+    DutyFreeManagement dutyFreeManagement;
+    FlightReport flightReport;
+    Scanner scanner = new Scanner(System.in);
+    public Manager(String loginID, String password, FlightSchedule sch, CateringMenuManagement cmm, DutyFreeManagement dfm, FlightReport fr) {
         super(loginID, password);
+        flightSchedule = sch;
+        cateringMenuManagement = cmm;
+        dutyFreeManagement = dfm;
+        flightReport = fr;
     }
 
     @Override
     public void displayInfo() {
         System.out.println("Welcome, Manager " + loginID + "!");
         System.out.println("You have administrator permissions.");
+    }
+
+    public void menu() {
+        boolean managerMenu = true;
+        while (managerMenu) {
+            System.out.println("\n1. Manage Flights");
+            System.out.println("2. Manage Duty-Free");
+            System.out.println("3. Manage Catering");
+            System.out.println("4. Logout");
+            System.out.print("Choose an option: ");
+            int managerChoice = scanner.nextInt();
+            System.out.println();
+            try {
+                switch (managerChoice) {
+                    case 1:
+                        boolean flightManagement = true;
+                        while (flightManagement) {
+                            System.out.println("\n1. Flight Report");
+                            System.out.println("2. Add Flight");
+                            System.out.println("3. Update Flight");
+                            System.out.println("4. View Flights");
+                            System.out.println("5. Delete Flight");
+                            System.out.println("6. Back to Manager Menu");
+                            System.out.print("Choose an option: ");
+                            int flightManagementChoice = scanner.nextInt();
+                            System.out.println();
+
+                            switch (flightManagementChoice) {
+                                case 1:
+                                    flightReport.menu();
+                                    break;
+                                case 2:
+                                    addFlight(flightSchedule);
+                                    break;
+                                case 3:
+                                    updateFlight(flightSchedule);
+                                    break;
+                                case 4:
+                                    flightSchedule.viewFlights();
+                                    break;
+                                case 5:
+                                    deleteFlight(flightSchedule);
+                                    break;
+                                case 6:
+                                    flightManagement = false;
+                                    break;
+                                default:
+                                    throw new InvalidChoiceException("Invalid choice. Please try again.");
+                            }
+                        }
+                        break;
+                    case 2:
+                        dutyFreeManagement.manageDutyFree();
+                        break;
+                    case 3:
+                        cateringMenuManagement.manageCatering();
+                        break;
+                    case 4:
+                        managerMenu = false;
+                        break;
+                    default:
+                        throw new InvalidChoiceException("Invalid choice. Please try again.");
+                }
+            } catch (InvalidChoiceException | ExceededMaxSizeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     // Add flight method
@@ -62,36 +140,48 @@ public class Manager extends User {
 
         System.out.print("Number of Economy Seats: ");
         flight.economySeats = sc.nextInt();
+        flight.vacantEconomySeats = flight.economySeats;
         sc.nextLine(); // Consumer newline
 
-        System.out.print("Seat Price for Economy: ");
-        flight.economySeatPrice = sc.nextDouble();
-        sc.nextLine(); // Consume newline
+        if (flight.economySeats>0) {
+            System.out.print("Seat Price for Economy: ");
+            flight.economySeatPrice = sc.nextDouble();
+            sc.nextLine(); // Consume newline
+        }
 
         System.out.print("Number of Business Seats: ");
         flight.businessSeats = sc.nextInt();
+        flight.vacantBusinessSeats = flight.businessSeats;
         sc.nextLine(); // Consume newline
 
-        System.out.print("Seat Price for Business: ");
-        flight.businessSeatPrice = sc.nextDouble();
-        sc.nextLine(); //Consume newline
+        if (flight.businessSeats>0) {
+            System.out.print("Seat Price for Business: ");
+            flight.businessSeatPrice = sc.nextDouble();
+            sc.nextLine(); //Consume newline
+        }
 
         System.out.print("Number of First Seats: ");
         flight.firstSeats = sc.nextInt();
+        flight.vacantFirstSeats = flight.firstSeats;
         sc.nextLine(); // Consume newline
 
-        System.out.print("Seat Price for First: ");
-        flight.firstSeatPrice = sc.nextDouble();
+        if (flight.firstSeats>0) {
+            System.out.print("Seat Price for First: ");
+            flight.firstSeatPrice = sc.nextDouble();
+            sc.nextLine(); // Consume newline
+        }
+
+        System.out.print("Number of Residence seats: ");
+        flight.residenceSeats = sc.nextInt();
+        flight.vacantResidenceSeats = flight.residenceSeats;
         sc.nextLine(); // Consume newline
 
-        // Setting Residence seat to 1 by default
-        flight.residenceSeats = 1;
-
-        // Get price for Residence class ticket
-        System.out.print("Seat Price for Residence: ");
-        flight.residenceSeatPrice = sc.nextDouble();
-        sc.nextLine(); // Consume newline
-
+        if (flight.residenceSeats>0) {
+            System.out.print("Seat Price for Residence: ");
+            flight.residenceSeatPrice = sc.nextDouble();
+            sc.nextLine(); // Consume newline
+        }
+        
         // Add the flight to the schedule
         flightSchedule.addFlight(flight);
         System.out.println("Successfully added flight " + flight.flightId + " to the schedule.");

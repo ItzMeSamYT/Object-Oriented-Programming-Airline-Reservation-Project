@@ -90,6 +90,11 @@ public class Flight {
         }
     }
 
+    public int getVacantSeats() {
+        return vacantEconomySeats  + vacantBusinessSeats + vacantFirstSeats + vacantResidenceSeats;
+
+    }
+
     public void updateVacantSeats(String classType, int change) {
         switch (classType) {
             case "Economy":

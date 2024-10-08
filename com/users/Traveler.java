@@ -6,7 +6,6 @@ import com.exceptions.InvalidChoiceException;
 
 public class Traveler extends User implements Runnable {
     public Thread t;
-    boolean travelerMenu = true;
     Scanner scanner = new Scanner(System.in);
     int noOfSeats;
     String classChoice;
@@ -171,9 +170,8 @@ public class Traveler extends User implements Runnable {
         return booked;
     }
 
-    @Override
-    public void run() {
-        displayInfo();
+    public void menu() {
+        boolean travelerMenu = true;
         while (travelerMenu) {
             System.out.println("\n1. Input Personal Details");
             System.out.println("2. View Flight Schedule");
@@ -212,5 +210,11 @@ public class Traveler extends User implements Runnable {
                     }
             }
         }
+    }
+
+    @Override
+    public void run() {
+        displayInfo();
+        menu();
     }
 }
