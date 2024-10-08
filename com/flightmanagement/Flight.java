@@ -1,4 +1,5 @@
 package com.flightmanagement;
+import java.util.Scanner;
 import com.catering.*;
 import com.dutyfree.DutyFreeManagement;
 import com.exceptions.InvalidChoiceException;
@@ -7,6 +8,7 @@ public class Flight {
     public String flightId;
     public String origin;
     public String destination;
+    public DATE date = new DATE();
     public FlightType type;
     public int totalSeats;
     public boolean cateringAvailable;
@@ -46,13 +48,13 @@ public class Flight {
     public String displayPrice(String classType) {
         switch(classType) {
             case "Economy":
-                return "$"+economySeatPrice;
+                return "$" + String.format("%.2f", economySeatPrice);
             case "Business":
-                return "$"+businessSeatPrice;
+                return "$" + String.format("%.2f", businessSeatPrice);
             case "First":
-                return "$"+firstSeatPrice;
+                return "$" + String.format("%.2f", firstSeatPrice);
             case "Residence":
-                return "$"+residenceSeatPrice;
+                return "$" + String.format("%.2f", residenceSeatPrice);
             default:
                 return "";
         }
@@ -122,6 +124,21 @@ public class Flight {
             default:
                 return -1;
         }
+    }
+
+    public void setDate() {
+        @SuppressWarnings("resource")
+        Scanner sc =  new Scanner(System.in);
+        System.out.print("Enter day: ");
+        date.day = sc.nextInt();
+        System.out.print("Enter month: ");
+        date.month = sc.nextInt();
+        System.out.print("Enter year: ");
+        date.year  = sc.nextInt();
+    }
+
+    public String getDate() {
+        return date.toString();
     }
 
     public void printCateringMenu() {

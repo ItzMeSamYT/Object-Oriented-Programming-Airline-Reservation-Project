@@ -12,6 +12,7 @@ public class Traveler extends User implements Runnable {
     String classChoice;
     String email=null;
     String contactNo=null;
+    double bookedSeatPrice;
 
     FlightSchedule mainFlightSchedule;
     FlightSchedule filtered;
@@ -42,7 +43,8 @@ public class Traveler extends User implements Runnable {
             System.out.println("2. No");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
-            if (choice == 2) {
+            scanner.nextLine();
+            if (choice != 1) {
                 return;
             }
         }
@@ -58,7 +60,7 @@ public class Traveler extends User implements Runnable {
         System.out.println("========================================");
         System.out.printf("%-15s %s\n", "Flight ID: "+booked.flightId, "Class: "+classChoice);
         System.out.printf("%-15s %s\n", "No of seats booked: "+noOfSeats, "Singular Seat Price: "+booked.displayPrice(classChoice));
-        double subTotal =  booked.getPrice(classChoice) * noOfSeats;
+        double subTotal =  bookedSeatPrice * noOfSeats;
         double serviceTax = 0.05*subTotal;
         System.out.printf("%-15s $%.2f\n",  "Sub Total: ", subTotal);
         System.out.printf("%-15s $%.2f\n",  "Service Tax: ", serviceTax);
@@ -114,13 +116,13 @@ public class Traveler extends User implements Runnable {
         System.out.print("Enter number of seats to book: ");
         noOfSeats = scanner.nextInt();
         scanner.nextLine();
+        bookedSeatPrice = selected.getPrice(classChoice);
         
         if (selected.getVacantSeats(classChoice)>selected.getTotalSeats(classChoice)) {
             System.out.println("Not enough vacant seats on flight.");
         } else {
             selected.updateVacantSeats(classChoice, -1*(noOfSeats));
             System.out.println("Successfully booked "+noOfSeats+" "+classChoice+" class seats!");
-
         }
 
         try {

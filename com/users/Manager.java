@@ -36,6 +36,9 @@ public class Manager extends User {
         System.out.print("Destination: ");
         flight.destination = sc.nextLine();
 
+        System.out.println("Date: ");
+        flight.setDate();
+
         System.out.print("Total Seats: ");
         flight.totalSeats = sc.nextInt();
         sc.nextLine(); // Consume newline
@@ -111,7 +114,7 @@ public class Manager extends User {
             throw new InvalidChoiceException("Flight not found.");
         }
 
-        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Total Seats \n6. Ticket Price \n7. Catering Availability \n8. Duty-Free Availability\n9. Status \n10. Exit");
+        System.out.println("\n1. Flight ID \n2. Flight type \n3. Origin \n4. Destination \n5. Date \n6. Total Seats \n7. Ticket Price \n8. Catering Availability \n9. Duty-Free Availability\n10. Status \n11. Exit");
         System.out.print("What do you want to update: ");
         int choice = sc.nextInt();
         sc.nextLine(); // Consume newline
@@ -143,20 +146,26 @@ public class Manager extends User {
                 System.out.println("Destination updated successfully!");
                 break;
             case 5:
+                System.out.println("Current Date: "+flight.getDate());
+                System.out.println("Set new date: ");
+                flight.setDate();
+                System.out.println("Date updated scuccessfully.");
+                break;
+            case 6:
                 System.out.println("Current Total Seats: " + flight.totalSeats);
                 System.out.print("New Total Seats: ");
                 flight.totalSeats = sc.nextInt();
                 sc.nextLine(); // Consume newline
                 System.out.println("Total seats updated successfully!");
                 break;
-            case 6:
+            case 7:
                 System.out.println("Current Economy Seat Price: " + flight.economySeatPrice);
                 System.out.print("New Economy Seat Price: ");
                 flight.economySeatPrice = sc.nextDouble();
                 sc.nextLine(); //Consume newLine
                 System.out.println("Economy seat price updated successfully!");
                 break;
-            case 7:
+            case 8:
                 System.out.println("Current Catering Availability: " + flight.cateringAvailable);
                 System.out.print("New Catering Availability: ");
                 flight.cateringAvailable = sc.nextBoolean();
@@ -166,7 +175,7 @@ public class Manager extends User {
                     flight.manageCateringMenu();
                 }
                 break;
-            case 8:
+            case 9:
                 System.out.println("Current Duty-Free Availability: "+flight.dutyFreeAvailable);
                 System.out.print("New Duty-Free Availability: ");
                 flight.dutyFreeAvailable = sc.nextBoolean();
@@ -175,13 +184,13 @@ public class Manager extends User {
                     flight.manageDutyFree();
                 }
                 break;
-            case 9:
+            case 10:
                 System.out.println("Current Status: " + flight.status);
                 System.out.print("New Status: ");
                 flight.status = sc.nextLine();
                 System.out.println("Status updated successfully!");
                 break;
-            case 10:
+            case 11:
                 System.out.println("Exiting...");
                 break;
             default:
