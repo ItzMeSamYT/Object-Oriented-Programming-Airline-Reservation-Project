@@ -34,7 +34,7 @@ class AirlineReservationSystem {
                         traveler.t.join();
                     } catch (InterruptedException e) {}
                     break;
-
+                
                 case 2:
                     System.out.print("Enter Manager Username: ");
                     String managerUsername = scanner.nextLine();
