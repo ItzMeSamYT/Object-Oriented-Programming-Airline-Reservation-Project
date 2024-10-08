@@ -58,8 +58,8 @@ public class Traveler extends User implements Runnable {
         System.out.println("                INVOICE                 ");
         System.out.println("========================================");
         System.out.printf("%-15s %s\n", "Flight ID: "+booked.flightId, "Class: "+classChoice);
-        System.out.printf("%-15s", "Departure Date: "+booked.date);
-        System.out.printf("%-15s %s\n", "No of seats booked: "+noOfSeats, "Singular Seat Price: "+booked.displayPrice(classChoice));
+        System.out.printf("%-15s\n", "Departure Date: "+booked.date);
+        System.out.printf("%-15s %s\n", "No of seats booked: "+noOfSeats, "Singular Seat Price: "+bookedSeatPrice);
         double subTotal =  bookedSeatPrice * noOfSeats;
         double serviceTax = 0.05*subTotal;
         System.out.printf("%-15s $%.2f\n",  "Sub Total: ", subTotal);
@@ -72,6 +72,18 @@ public class Traveler extends User implements Runnable {
         System.out.println("FLIGHT BOOKING");
         System.out.println("Enter Date of Travel: ");
         DATE d = new DATE();
+        System.out.print("Enter day: ");
+        d.day = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter month: ");
+        d.month = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter year: ");
+        d.year  = scanner.nextInt();
+        scanner.nextLine();
+
         System.out.print("Enter origin: ");
         String origin = scanner.nextLine();
         System.out.print("Enter destination: ");

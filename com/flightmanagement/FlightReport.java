@@ -122,7 +122,7 @@ public class FlightReport {
             System.out.println("2. Full Capacity Flights");
             System.out.println("3. Frequent Booking Periods");
             System.out.println("4. Frequent Destinations");
-            System.out.println("5. Back to Manager Menu");
+            System.out.println("5. Back");
             System.out.print("Choose an option: ");
             int flightReportChoice = scanner.nextInt();
             System.out.println();

@@ -46,7 +46,7 @@ public class Manager extends User {
                             System.out.println("3. Update Flight");
                             System.out.println("4. View Flights");
                             System.out.println("5. Delete Flight");
-                            System.out.println("6. Back to Manager Menu");
+                            System.out.println("6. Back");
                             System.out.print("Choose an option: ");
                             int flightManagementChoice = scanner.nextInt();
                             System.out.println();
@@ -181,7 +181,7 @@ public class Manager extends User {
             flight.residenceSeatPrice = sc.nextDouble();
             sc.nextLine(); // Consume newline
         }
-        
+
         // Add the flight to the schedule
         flightSchedule.addFlight(flight);
         System.out.println("Successfully added flight " + flight.flightId + " to the schedule.");
