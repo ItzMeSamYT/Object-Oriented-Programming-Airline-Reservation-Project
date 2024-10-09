@@ -105,7 +105,7 @@ public class FlightReport {
         }
 
         System.out.println("========================================");
-        System.out.println("   FREQUENT BOOKING PERIODS            ");
+        System.out.println("        FREQUENT BOOKING PERIODS        ");
         System.out.println("========================================");
         for (int j=0; j<uniqueDates.length; j++) {
             if (uniqueDates[j]!=null) {
@@ -119,7 +119,6 @@ public class FlightReport {
     public void reportMostFrequentedDestinations() {
         int MAX_FLIGHTS = flightSchedule.flightList.length; // Based on the number of flights
         String[] destinations = new String[MAX_FLIGHTS]; // Array to store unique destinations
-        int[] counts = new int[MAX_FLIGHTS]; // Array to store the count of flights to each destination
         int size = 0; // To track how many unique destinations are found
 
         // Iterate through the flight schedule
@@ -130,8 +129,7 @@ public class FlightReport {
 
                 // Check if the destination is already in the destinations array
                 for (int i = 0; i < size; i++) {
-                    if (destinations[i].equalsIgnoreCase(destination)) {
-                        counts[i]++; // Increment the count if found
+                    if (destinations[i].equals(destination)) {
                         found = true;
                         break;
                     }
@@ -140,22 +138,21 @@ public class FlightReport {
                 // If not found, add the destination to the array
                 if (!found && size < MAX_FLIGHTS) {
                     destinations[size] = destination; // Add new destination
-                    counts[size] = 1; // Initialize count to 1
                     size++;
                 }
             }
         }
 
         // Print the most frequent destinations
-        System.out.println("========================================");
+        System.out.println("=============================================");
         System.out.println("    MOST FREQUENTLY VISITED DESTINATIONS");
-        System.out.println("========================================");
+        System.out.println("=============================================");
 
         for (int i = 0; i < size; i++) {
-            System.out.printf("Destination: %s, Flights: %d\n", destinations[i], counts[i]);
+            System.out.printf("Destination: %s\n", destinations[i]);
         }
         
-        System.out.println("========================================");
+        System.out.println("=============================================");
     }
 
     public void menu() throws InvalidChoiceException {
