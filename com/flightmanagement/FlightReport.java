@@ -75,7 +75,7 @@ public class FlightReport {
         for (int i = 0; i < dateList.length; i++) {
             if (dateList[i] == null) {
                 dateList[i] = new UNIQUEDATE(date);
-                break;
+                return;
             }
         }
     }
@@ -114,42 +114,48 @@ public class FlightReport {
         }
         System.out.println("========================================");
     }
+
+    private void addDestination(uniqueDestination[] destinationList, String destination) {
+        for (int i=0; i<destinationList.length; i++) {
+            if (destinationList[i]==null) {
+                destinationList[i] = new uniqueDestination(destination);
+                return;
+            }
+        }
+    }
     
     // Method to report the most frequent destinations
     public void reportMostFrequentedDestinations() {
-        int MAX_FLIGHTS = flightSchedule.flightList.length; // Based on the number of flights
-        String[] destinations = new String[MAX_FLIGHTS]; // Array to store unique destinations
-        int size = 0; // To track how many unique destinations are found
+        String[] destinations = new String[flightSchedule.flightCount];
+        int i;
 
-        // Iterate through the flight schedule
-        for (Flight flight : flightSchedule.flightList) {
-            if (flight != null) {
-                String destination = flight.destination;
-                boolean found = false;
+        for (i=0; i<flightSchedule.flightCount; i++) {
+            destinations[i] = flightSchedule.flightList[i].destination;
+        }
 
-                // Check if the destination is already in the destinations array
-                for (int i = 0; i < size; i++) {
-                    if (destinations[i].equals(destination)) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                // If not found, add the destination to the array
-                if (!found && size < MAX_FLIGHTS) {
-                    destinations[size] = destination; // Add new destination
-                    size++;
+        uniqueDestination[] uniqueDestinations = new uniqueDestination[i+1];
+        for (String d : destinations) {
+            boolean exists = false;
+            for (int j=0; j<uniqueDestinations.length; j++) {
+                if  (uniqueDestinations[j] !=null && d.equals(uniqueDestinations[j].destination)) {
+                    uniqueDestinations[j].count++;
+                    exists = true;
                 }
             }
+
+            if (!exists) {
+                addDestination(uniqueDestinations, d);
+            }
         }
+
 
         // Print the most frequent destinations
         System.out.println("=============================================");
         System.out.println("    MOST FREQUENTLY VISITED DESTINATIONS");
         System.out.println("=============================================");
 
-        for (int i = 0; i < size; i++) {
-            System.out.printf("Destination: %s\n", destinations[i]);
+        for (int j = 0; j < uniqueDestinations.length; j++) {
+            System.out.printf("Destination: %s\n", uniqueDestinations[j]);
         }
         
         System.out.println("=============================================");
@@ -165,6 +171,7 @@ public class FlightReport {
             System.out.println("5. Back");
             System.out.print("Choose an option: ");
             int flightReportChoice = scanner.nextInt();
+            scanner.nextLine();
             System.out.println();
             switch (flightReportChoice) {
                 case 1:
@@ -186,5 +193,23 @@ public class FlightReport {
                     throw new InvalidChoiceException("Invalid Menu Choice");
             }
         }
+    }
+}
+
+class UNIQUEDATE {
+    DATE date;
+    int count;
+    UNIQUEDATE(DATE d) {
+        date=d;
+        count=1;
+    }
+}
+
+class uniqueDestination {
+    String destination;
+    int count;
+    uniqueDestination(String destination) {
+        this.destination=destination;
+        count=1;
     }
 }

@@ -125,6 +125,11 @@ public class Traveler extends User implements Runnable {
         if (!classChoice.equals("Economy") && !classChoice.equals("Business") && !classChoice.equals("First") && !classChoice.equals("Residence")) {
             throw new InvalidChoiceException("Invalid choice of traveling class.");
         }
+
+        if (selected.getVacantSeats(classChoice)<=0) {
+            throw new InvalidChoiceException("No seats available for the selected class.");
+        }
+
         System.out.println("Price of each seat: "+selected.displayPrice(classChoice));
 
         System.out.print("Enter number of seats to book: ");
@@ -132,7 +137,7 @@ public class Traveler extends User implements Runnable {
         scanner.nextLine();
         bookedSeatPrice = selected.getPrice(classChoice);
         
-        if (selected.getVacantSeats(classChoice)>selected.getTotalSeats(classChoice)) {
+        if (noOfSeats>selected.getVacantSeats(classChoice)) {
             System.out.println("Not enough vacant seats on flight.");
         } else {
             selected.updateVacantSeats(classChoice, -1*(noOfSeats));
@@ -157,6 +162,7 @@ public class Traveler extends User implements Runnable {
             System.out.println("\nDuty-Free items are available for your flight!");
             System.out.println("Duty-Free items are as follows, please ask our staff to purchase any item(s)!");
             selected.printDutyFreeItems();
+            System.out.println();
         }
         booked = selected;
         genInvoice();
