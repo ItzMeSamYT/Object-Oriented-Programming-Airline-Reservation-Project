@@ -1,7 +1,7 @@
 package com.flightmanagement;
 
 public class FlightSchedule {
-    public int maxSize = 100; // Moved maxSize inside the class
+    public int maxSize = 100;
     public Flight[] flightList;
     public int flightCount = 0;
 
@@ -10,7 +10,18 @@ public class FlightSchedule {
     }
 
     public void addFlight(Flight f) {
-        flightList[flightCount++] = f;
+        boolean replaced = false;
+        for (int i=0; i<flightCount; i++) {
+            if (flightList[i] != null && flightList[i].status.equals("Cancelled")) {
+                flightList[i] = f;
+                replaced = true;
+                return;
+            }
+        }
+
+        if (!replaced) {
+            flightList[flightCount++] = f;
+        }
     }
 
     public void viewFlights() {
